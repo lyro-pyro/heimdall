@@ -3,8 +3,13 @@ Content parser service — extracts analyzable text from all input types.
 Supports: text, file, sql, chat, log.
 """
 
+from typing import Optional
+
 from app.core.logging_config import logger
+from app.models.schemas import StructuredLog
 from app.utils.file_handling import decode_base64_content, extract_text_from_file
+from app.utils.log_parser import parse_raw_logs
+from app.utils.log_validator import validate_batch
 from app.utils.validators import sanitize_content, validate_content_length
 
 
@@ -51,6 +56,56 @@ class Parser:
         logger.info(f"Parsed successfully: {len(sanitized)} characters")
         return sanitized
 
+    def parse_to_structured(
+        self,
+        input_type: str,
+        content: str,
+        file_name: str | None = None,
+    ) -> Optional[list[StructuredLog]]:
+        """
+        Parse raw content into structured log entries.
+        Only applicable for 'log' input type; returns None for other types.
+
+        Pipeline: raw text → log_parser (regex chain) → log_validator (Pydantic)
+
+        Args:
+            input_type: The type of input being processed.
+            content: Raw log content.
+            file_name: Optional file name for file-based input.
+
+        Returns:
+            List of validated StructuredLog instances, or None if not a log type.
+        """
+        if input_type.lower() not in ("log", "text"):
+            return None
+
+        logger.info("Parsing content into structured log entries")
+
+        # Step 1: Parse raw lines into dictionaries
+        parsed_dicts, parse_warnings = parse_raw_logs(content)
+
+        if parse_warnings:
+            for w in parse_warnings:
+                logger.warning(f"Parse warning: {w}")
+
+        if not parsed_dicts:
+            logger.info("No structured logs produced from content")
+            return None
+
+        # Step 2: Validate through Pydantic
+        valid_logs, validation_errors = validate_batch(parsed_dicts)
+
+        if validation_errors:
+            for err in validation_errors:
+                logger.warning(f"Validation error: {err}")
+
+        logger.info(
+            f"Structured parsing complete: {len(valid_logs)} valid logs "
+            f"from {len(parsed_dicts)} parsed entries"
+        )
+
+        return valid_logs if valid_logs else None
+
     def _parse_text(self, content: str) -> str:
         """Parse plain text input."""
         return content.strip()
@@ -88,3 +143,4 @@ class Parser:
     def _parse_log(self, content: str) -> str:
         """Parse log input — preserves line structure for line-by-line analysis."""
         return content.strip()
+

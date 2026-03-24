@@ -558,3 +558,173 @@ body {
   color: #7A8CA3;
   line-height: 1.6;
 }
+
+/* ── IOC Panel ─────────────────────────────────────────────────────────── */
+.ioc-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+}
+.ioc-item {
+  padding: 4px 8px;
+  font-size: 0.78rem;
+  border: 1px solid var(--border-line);
+  background: rgba(0, 0, 0, 0.3);
+}
+.ioc-item.ip { color: var(--accent-orange); border-color: rgba(255, 77, 41, 0.3); }
+.ioc-item.token { color: var(--accent-copper); border-color: rgba(196, 139, 136, 0.3); }
+.ioc-item.email { color: var(--accent-blue); border-color: rgba(100, 130, 180, 0.3); }
+
+/* ── Structured Log View Toggle ────────────────────────────────────────── */
+.log-view-toggle {
+  display: flex;
+  border-bottom: 1px solid var(--border-line);
+  background: rgba(10, 10, 10, 0.9);
+  flex-shrink: 0;
+}
+
+.log-view-toggle .toggle-btn {
+  flex: 1;
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-line);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  padding: 8px 12px;
+  cursor: pointer;
+  text-transform: uppercase;
+  transition: all 0.15s ease;
+}
+
+.log-view-toggle .toggle-btn:last-child { border-right: none; }
+.log-view-toggle .toggle-btn:hover { color: var(--text-secondary); background: rgba(255, 255, 255, 0.03); }
+
+.log-view-toggle .toggle-btn.active {
+  color: var(--accent-orange);
+  background: var(--accent-orange-dim);
+  border-bottom: 2px solid var(--accent-orange);
+}
+
+/* ── Structured Log Table ──────────────────────────────────────────────── */
+.structured-log-table-wrap {
+  padding: 0 !important;
+}
+
+.structured-log-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-family: var(--font-code);
+  font-size: 0.78rem;
+  table-layout: fixed;
+}
+
+.structured-log-table thead th {
+  text-align: left;
+  padding: 8px 10px;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  border-bottom: 1px solid var(--border-line);
+  background: rgba(10, 10, 10, 0.8);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  text-transform: uppercase;
+}
+
+.structured-log-table thead th:nth-child(1) { width: 160px; }
+.structured-log-table thead th:nth-child(2) { width: 80px; }
+.structured-log-table thead th:nth-child(3) { width: 110px; }
+.structured-log-table thead th:nth-child(4) { width: auto; }
+
+.structured-log-table tbody td {
+  padding: 6px 10px;
+  border-bottom: 1px solid rgba(51, 51, 51, 0.4);
+  vertical-align: top;
+  color: var(--text-primary);
+  line-height: 1.4;
+}
+
+.structured-log-row { transition: background 0.1s ease; }
+.structured-log-row:hover { background: rgba(255, 255, 255, 0.03); }
+.structured-log-row.expandable { cursor: pointer; }
+.structured-log-row.expandable:hover { background: rgba(255, 255, 255, 0.06); }
+
+.ts-cell {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+
+.service-cell {
+  color: var(--accent-blue);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.msg-cell {
+  color: #c0c0c0;
+  word-break: break-word;
+  font-size: 0.76rem;
+}
+
+/* ── Log Level Badges ──────────────────────────────────────────────────── */
+.log-level-badge {
+  display: inline-block;
+  padding: 2px 6px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  border: 1px solid currentColor;
+  white-space: nowrap;
+}
+
+.log-level-critical {
+  color: #ff3333;
+  text-shadow: 0 0 6px rgba(255, 51, 51, 0.4);
+}
+
+.log-level-error {
+  color: var(--accent-orange);
+  text-shadow: 0 0 6px rgba(255, 77, 41, 0.3);
+}
+
+.log-level-warning {
+  color: #e6a817;
+}
+
+.log-level-info {
+  color: var(--text-secondary);
+}
+
+/* ── Metadata Expansion Row ────────────────────────────────────────────── */
+.meta-row td {
+  padding: 0 10px 8px 10px !important;
+  border-bottom: 1px solid var(--border-line) !important;
+  background: rgba(0, 0, 0, 0.4);
+}
+
+.meta-content {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 6px 0 2px 0;
+}
+
+.meta-tag {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.68rem;
+  font-family: var(--font-code);
+  color: var(--accent-copper);
+  border: 1px solid rgba(196, 139, 136, 0.3);
+  background: rgba(196, 139, 136, 0.05);
+  white-space: nowrap;
+}

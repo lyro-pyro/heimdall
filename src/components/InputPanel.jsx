@@ -45,12 +45,12 @@ export default function InputPanel({ onAnalyze, isLoading }) {
           <div className="crosshair-corners"></div>
           <div className="drop-icon">⇪</div>
           <div className="drop-text">MOUNT SOURCE DRIVE</div>
-          <div className="drop-hint">SUPPORTED: .LOG, .TXT, .PDF, .DOCX</div>
-          <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".log,.txt,.pdf,.doc,.docx" onChange={(e) => {
+          <div className="drop-hint">SUPPORTED: .LOG, .TXT, .JSON, .PDF, .DOCX</div>
+          <input type="file" ref={fileInputRef} style={{ display: 'none' }} accept=".log,.txt,.json,.pdf,.doc,.docx" onChange={(e) => {
             const file = e.target.files[0];
             if (file) {
               const reader = new FileReader();
-              const isTextFile = file.name.match(/\.(log|txt|csv)$/i);
+              const isTextFile = file.name.match(/\.(log|txt|csv|json)$/i);
               if (isTextFile) {
                 reader.onload = (ev) => setContent(ev.target.result);
                 reader.readAsText(file);

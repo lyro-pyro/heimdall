@@ -7,6 +7,8 @@ export default defineConfig({
     port: 3000,
     proxy: {
       '/analyze': 'http://localhost:8000',
+      '/logs': 'http://localhost:8000',
+      '/ai': 'http://localhost:8000',
       '/health': 'http://localhost:8000',
     },
   },

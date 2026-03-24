@@ -11,16 +11,22 @@ export default function App() {
   const [inputContent, setInputContent] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState('');
+  const [structuredLogs, setStructuredLogs] = useState(null);
 
   const handleAnalyze = async (payload) => {
     setIsLoading(true);
     setError('');
     setResult(null);
+    setStructuredLogs(null);
     setInputContent(payload.content);
 
     try {
       const data = await analyzeContent(payload);
       setResult(data);
+      // Capture structured logs from the response (if present)
+      if (data.structured_logs && data.structured_logs.length > 0) {
+        setStructuredLogs(data.structured_logs);
+      }
     } catch (err) {
       setError(err.message || 'ANALYSIS_ERR:// FAILED');
     } finally {
@@ -126,6 +132,7 @@ export default function App() {
             <LogViewer
               content={inputContent}
               findings={result.findings}
+              structuredLogs={structuredLogs}
             />
           )}
         </aside>
@@ -134,3 +141,4 @@ export default function App() {
     </div>
   );
 }
+
