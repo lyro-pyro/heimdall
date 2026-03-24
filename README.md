@@ -1,8 +1,8 @@
-# LogAI: Secure Data Intelligence Platform
+# Central System Log Analyzer
 
-![LogAI Platform](https://logai-platform-mhbwlfzoe-avula-subhangs-projects.vercel.app/vite.svg)
+![Central System Log Analyzer Platform](https://logai-platform-mhbwlfzoe-avula-subhangs-projects.vercel.app/vite.svg)
 
-**LogAI** is a high-performance log analysis and threat intelligence platform designed for modern Security Operations Centers (SOCs). Featuring a streamlined UI and a fast FastAPI backend, LogAI autonomously scans data streams, detects leaked credentials, and correlates suspicious activities into actionable threat intelligence.
+**Central System Log Analyzer** is a high-performance log analysis and threat intelligence platform designed for modern Security Operations Centers (SOCs). Featuring a streamlined UI and a fast FastAPI backend, this analyzer autonomously scans data streams, detects leaked credentials, and correlates suspicious activities into actionable threat intelligence.
 
 ## 🚀 Key Features
 
