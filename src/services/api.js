@@ -3,8 +3,8 @@
  */
 import axios from 'axios';
 
-// Changed from 8001 to 8000 to match backend default port
-const API_BASE = 'http://localhost:8000';
+// Use relative path in production (Vercel rewrites to /api) and localhost for dev
+const API_BASE = import.meta.env.PROD ? '' : (import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000');
 
 const apiClient = axios.create({
   baseURL: API_BASE,

@@ -1,4 +1,5 @@
 {
+  "name": "heimdall",
   "version": 2,
   "builds": [
     {

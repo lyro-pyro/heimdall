@@ -13,6 +13,7 @@ from app.utils.patterns import (
     IP_ADDRESS_PATTERN,
     RISK_MAP,
     SUSPICIOUS_IP_INDICATORS,
+    MITRE_MAP,
 )
 
 class LogAnalyzer:
@@ -56,11 +57,14 @@ class LogAnalyzer:
             # 1. Failed login tracking for brute-force correlation
             if FAILED_LOGIN_PATTERN.search(line_str):
                 failed_login_lines.append(line_num)
+                mitre = MITRE_MAP.get("failed_login", {})
                 all_findings.append(Finding(
                     type="failed_login",
                     risk=RISK_MAP.get("failed_login", "medium"),
                     line=line_num,
-                    reasoning="Explicit authentication failure or unauthorized access pattern."
+                    reasoning="Explicit authentication failure or unauthorized access pattern.",
+                    mitre_tactic=mitre.get("tactic"),
+                    mitre_technique=mitre.get("technique")
                 ))
 
             # 2. IP address extraction and anomaly bounding
@@ -71,22 +75,32 @@ class LogAnalyzer:
                     ip_lines[ip].append(line_num)
 
             # 3. Explicit suspicious infrastructure
-            if SUSPICIOUS_IP_INDICATORS.search(line_str):
+            match = SUSPICIOUS_IP_INDICATORS.search(line_str)
+            if match:
+                mitre = MITRE_MAP.get("suspicious_ip", {})
                 all_findings.append(Finding(
                     type="suspicious_ip",
                     risk=RISK_MAP.get("suspicious_ip", "high"),
                     line=line_num,
-                    reasoning="Log indicates traffic originating from a known blocked or suspicious host network."
+                    reasoning="Log indicates traffic originating from a known blocked or suspicious host network.",
+                    mitre_tactic=mitre.get("tactic"),
+                    mitre_technique=mitre.get("technique"),
+                    ioc=match.group(0)
                 ))
 
             # 4. Error Stack Trace Leaks
-            if ERROR_LEAK_PATTERN.search(line_str):
+            match = ERROR_LEAK_PATTERN.search(line_str)
+            if match:
                 error_count += 1
+                mitre = MITRE_MAP.get("error_leak", {})
                 all_findings.append(Finding(
                     type="error_leak",
                     risk=RISK_MAP.get("error_leak", "medium"),
                     line=line_num,
-                    reasoning="Internal application structure (stack trace, unhandled exception) leaked in logs."
+                    reasoning="Internal application structure (stack trace, unhandled exception) leaked in logs.",
+                    mitre_tactic=mitre.get("tactic"),
+                    mitre_technique=mitre.get("technique"),
+                    ioc=match.group(0)
                 ))
 
         # ── Cross-Line Correlation ────────────────────────────────────────────
@@ -95,22 +109,29 @@ class LogAnalyzer:
         if len(failed_login_lines) >= self.BRUTE_FORCE_THRESHOLD:
             logger.warning(f"CORRELATION: {len(failed_login_lines)} failed logins indicates Brute Force")
             brute_line = failed_login_lines[self.BRUTE_FORCE_THRESHOLD - 1]
+            mitre = MITRE_MAP.get("brute_force", {})
             all_findings.append(Finding(
                 type="brute_force",
                 risk="critical",
                 line=brute_line,
-                reasoning=f"Correlated {len(failed_login_lines)} active login failures. High probability of active Brute Force or Credential Stuffing."
+                reasoning=f"Correlated {len(failed_login_lines)} active login failures. High probability of active Brute Force or Credential Stuffing.",
+                mitre_tactic=mitre.get("tactic"),
+                mitre_technique=mitre.get("technique")
             ))
 
         # B. IP Rate Limit / Anomaly Tracking
         heavy_ips = {ip: count for ip, count in ip_counter.items() if count >= 10}
         for ip, count in heavy_ips.items():
             first_line = ip_lines[ip][0]
+            mitre = MITRE_MAP.get("anomalous_ip_volume", {})
             all_findings.append(Finding(
                 type="anomalous_ip_volume",
                 risk="high",
                 line=first_line,
-                reasoning=f"IP [{ip}] triggered {count} log events within this cluster. Anomalous traffic volume detected."
+                reasoning=f"IP [{ip}] triggered {count} log events within this cluster. Anomalous traffic volume detected.",
+                mitre_tactic=mitre.get("tactic"),
+                mitre_technique=mitre.get("technique"),
+                ioc=ip
             ))
             logger.warning(f"CORRELATION: High-frequency IP {ip} seen {count} times")
 

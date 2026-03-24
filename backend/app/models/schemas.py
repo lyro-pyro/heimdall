@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 
-from typing import Optional
+from typing import Optional, Dict, List
 
 from pydantic import BaseModel, Field, field_validator
 
@@ -58,6 +58,9 @@ class Finding(BaseModel):
     risk: str
     line: int
     reasoning: str = ""
+    mitre_tactic: Optional[str] = None
+    mitre_technique: Optional[str] = None
+    ioc: Optional[str] = None
 
 
 class AnalyzeResponse(BaseModel):
@@ -73,3 +76,4 @@ class AnalyzeResponse(BaseModel):
     risk_level: str
     action: str
     insights: list[str]
+    iocs: Dict[str, List[str]] = Field(default_factory=lambda: {"ips": [], "emails": [], "tokens": [], "other": []})

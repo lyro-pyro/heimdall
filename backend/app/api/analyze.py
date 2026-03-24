@@ -102,6 +102,19 @@ async def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
         insights = insight_result["insights"]
         logger.info(f"Insights generated: {len(insights)} items")
 
+        # ── Aggregate IOCs ────────────────────────────────────────────────
+        iocs = {"ips": [], "emails": [], "tokens": [], "other": []}
+        for f in findings:
+            if getattr(f, "ioc", None):
+                if f.type in ("suspicious_ip", "anomalous_ip_volume"):
+                    if f.ioc not in iocs["ips"]: iocs["ips"].append(f.ioc)
+                elif f.type == "email":
+                    if f.ioc not in iocs["emails"]: iocs["emails"].append(f.ioc)
+                elif f.type in ("token", "api_key", "password", "secret", "high_entropy_string"):
+                    if f.ioc not in iocs["tokens"]: iocs["tokens"].append(f.ioc)
+                else:
+                    if f.ioc not in iocs["other"]: iocs["other"].append(f.ioc)
+
         # ── Step 8: Build Response ────────────────────────────────────────
         # Sort findings by line number for clean output
         findings.sort(key=lambda f: f.line)
@@ -114,6 +127,7 @@ async def analyze(request: AnalyzeRequest) -> AnalyzeResponse:
             risk_level=risk_level,
             action=action,
             insights=insights,
+            iocs=iocs,
         )
 
         logger.info(f"━━━ Analysis Complete ━━━ findings={len(findings)}, action={action}")

@@ -141,4 +141,27 @@ RISK_MAP: dict[str, str] = {
     "failed_login": "medium",
     "suspicious_ip": "high",
     "brute_force": "critical",
+    "high_entropy_string": "high",
+    "anomalous_ip_volume": "high",
+}
+
+# ── MITRE ATT&CK Mapping ─────────────────────────────────────────────────────
+
+MITRE_MAP: dict[str, dict[str, str]] = {
+    "api_key": {"tactic": "Credential Access", "technique": "T1552: Unsecured Credentials"},
+    "password": {"tactic": "Credential Access", "technique": "T1552: Unsecured Credentials"},
+    "token": {"tactic": "Credential Access", "technique": "T1552: Unsecured Credentials"},
+    "secret": {"tactic": "Credential Access", "technique": "T1552: Unsecured Credentials"},
+    "email": {"tactic": "Reconnaissance", "technique": "T1589: Gather Victim Identity Information"},
+    "phone": {"tactic": "Reconnaissance", "technique": "T1589: Gather Victim Identity Information"},
+    "stack_trace": {"tactic": "Discovery", "technique": "T1082: System Information Discovery"},
+    "debug_leak": {"tactic": "Discovery", "technique": "T1082: System Information Discovery"},
+    "hardcoded_credential": {"tactic": "Credential Access", "technique": "T1552: Unsecured Credentials"},
+    "error_leak": {"tactic": "Discovery", "technique": "T1082: System Information Discovery"},
+    "sql_injection": {"tactic": "Initial Access", "technique": "T1190: Exploit Public-Facing Application"},
+    "failed_login": {"tactic": "Credential Access", "technique": "T1110: Brute Force"},
+    "suspicious_ip": {"tactic": "Command and Control", "technique": "T1008: Fallback Channels"},
+    "brute_force": {"tactic": "Credential Access", "technique": "T1110: Brute Force"},
+    "high_entropy_string": {"tactic": "Defense Evasion", "technique": "T1140: Deobfuscate/Decode Files or Information"},
+    "anomalous_ip_volume": {"tactic": "Impact", "technique": "T1498: Network Denial of Service"}
 }

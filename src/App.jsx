@@ -3,6 +3,7 @@ import InputPanel from './components/InputPanel';
 import LogViewer from './components/LogViewer';
 import InsightsPanel from './components/InsightsPanel';
 import ResultDisplay from './components/ResultDisplay';
+import IocPanel from './components/IocPanel';
 import { analyzeContent } from './services/api';
 
 export default function App() {
@@ -100,6 +101,7 @@ export default function App() {
           {result && (
             <>
               <InsightsPanel data={result} />
+              <IocPanel iocs={result.iocs} />
               <ResultDisplay data={result} />
             </>
           )}

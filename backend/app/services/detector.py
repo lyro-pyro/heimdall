@@ -11,6 +11,7 @@ from app.utils.patterns import (
     RISK_MAP,
     SECURITY_PATTERNS,
     SENSITIVE_PATTERNS,
+    MITRE_MAP,
 )
 
 class Detector:
@@ -30,26 +31,36 @@ class Detector:
 
             # 1. Check sensitive data patterns
             for pattern_name, pattern in SENSITIVE_PATTERNS.items():
-                if pattern.search(line):
+                match = pattern.search(line)
+                if match:
                     risk = RISK_MAP.get(pattern_name, "medium")
+                    mitre = MITRE_MAP.get(pattern_name, {})
                     finding = Finding(
                         type=pattern_name, 
                         risk=risk, 
                         line=line_num,
-                        reasoning=f"Matched known rigorous regex pattern for {pattern_name}."
+                        reasoning=f"Matched known rigorous regex pattern for {pattern_name}.",
+                        mitre_tactic=mitre.get("tactic"),
+                        mitre_technique=mitre.get("technique"),
+                        ioc=match.group(0)
                     )
                     if not self._is_duplicate(findings, finding):
                         findings.append(finding)
 
             # 2. Check security issue patterns
             for pattern_name, pattern in SECURITY_PATTERNS.items():
-                if pattern.search(line):
+                match = pattern.search(line)
+                if match:
                     risk = RISK_MAP.get(pattern_name, "medium")
+                    mitre = MITRE_MAP.get(pattern_name, {})
                     finding = Finding(
                         type=pattern_name, 
                         risk=risk, 
                         line=line_num,
-                        reasoning=f"Identified clear security misconfiguration or leak: {pattern_name}."
+                        reasoning=f"Identified clear security misconfiguration or leak: {pattern_name}.",
+                        mitre_tactic=mitre.get("tactic"),
+                        mitre_technique=mitre.get("technique"),
+                        ioc=match.group(0)
                     )
                     if not self._is_duplicate(findings, finding):
                         findings.append(finding)
@@ -62,11 +73,15 @@ class Detector:
                 if len(clean_word) > 20:  
                     entropy = self._calculate_entropy(clean_word)
                     if entropy >= 4.5:
+                        mitre = MITRE_MAP.get("high_entropy_string", {})
                         finding = Finding(
                             type="high_entropy_string",
                             risk="high",
                             line=line_num,
-                            reasoning=f"High Shannon entropy ({entropy:.2f}) indicates potential obfuscated secret, base64 data, or JWT token."
+                            reasoning=f"High Shannon entropy ({entropy:.2f}) indicates potential obfuscated secret, base64 data, or JWT token.",
+                            mitre_tactic=mitre.get("tactic"),
+                            mitre_technique=mitre.get("technique"),
+                            ioc=clean_word
                         )
                         if not self._is_duplicate(findings, finding):
                             findings.append(finding)

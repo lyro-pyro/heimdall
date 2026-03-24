@@ -25,6 +25,11 @@ export default function ResultDisplay({ data }) {
                   <td style={{ color: 'var(--text-muted)' }}>0x{String(f.line).padStart(4, '0')}</td>
                   <td>
                     <div className="data-type">{f.type.toUpperCase()}</div>
+                    {f.mitre_tactic && (
+                      <div style={{ fontSize: '0.65rem', color: 'var(--accent-orange)', marginTop: '4px' }}>
+                        ▶ {f.mitre_technique} [{f.mitre_tactic.toUpperCase()}]
+                      </div>
+                    )}
                     <div style={{ fontSize: '0.6rem', color: 'var(--text-secondary)', marginTop: '4px', maxWidth: '250px' }}>
                       // {f.reasoning || "Static signature match"}
                     </div>
