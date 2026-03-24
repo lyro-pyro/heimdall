@@ -1,6 +1,6 @@
 # VSCODE_GUIDE.md — Step-by-Step Setup
 
-Follow these instructions to run **LogAI** perfectly in Visual Studio Code.
+Follow these instructions to run **Central System Log Analyzer** perfectly in Visual Studio Code.
 
 ---
 
@@ -14,7 +14,7 @@ Follow these instructions to run **LogAI** perfectly in Visual Studio Code.
 
 ## 🚀 Step 1: Open the Project
 1. Open VS Code.
-2. Click `File > Open Folder...` and select the `LogAI` directory.
+2. Click `File > Open Folder...` and select the `central-system-log-analyzer` directory.
 
 ## 🚀 Step 2: Backend Setup
 1. Open a new terminal in VS Code (`Ctrl + ~` or `Terminal > New Terminal`).
@@ -59,7 +59,7 @@ If you want the "AI Insights" feature:
    ```bash
    ollama run llama3
    ```
-   *LogAI will automatically detect Ollama and start using it for summaries.*
+   *Central System Log Analyzer will automatically detect Ollama and start using it for summaries.*
 
 ---
 

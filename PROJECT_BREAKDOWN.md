@@ -1,12 +1,12 @@
 # PROJECT_BREAKDOWN.md
 
-This document provides a comprehensive, file-by-line explanation of the **LogAI** project. It is designed to give you a deep understanding of every component, its importance, and how the code blocks work together to form a secure data intelligence platform.
+This document provides a comprehensive, file-by-line explanation of the **Central System Log Analyzer** project. It is designed to give you a deep understanding of every component, its importance, and how the code blocks work together to form a secure data intelligence platform.
 
 ---
 
 ## 🏗️ System Architecture Overview
 
-LogAI follows a modular architecture where each component has a single, well-defined responsibility. The data flow is as follows:
+Central System Log Analyzer follows a modular architecture where each component has a single, well-defined responsibility. The data flow is as follows:
 1. **Ingestion**: Raw content is sent to the `/analyze` endpoint.
 2. **Parsing**: Content is normalized into a standard string format.
 3. **Detection**: Regex-based scanners identify sensitive patterns on each line.
