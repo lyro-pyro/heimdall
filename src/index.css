@@ -612,6 +612,7 @@ body {
 /* ── Structured Log Table ──────────────────────────────────────────────── */
 .structured-log-table-wrap {
   padding: 0 !important;
+  overflow-x: auto;
 }
 
 .structured-log-table {
@@ -619,7 +620,8 @@ body {
   border-collapse: collapse;
   font-family: var(--font-code);
   font-size: 0.78rem;
-  table-layout: fixed;
+  table-layout: auto;
+  min-width: 700px;
 }
 
 .structured-log-table thead th {
@@ -637,9 +639,9 @@ body {
   text-transform: uppercase;
 }
 
-.structured-log-table thead th:nth-child(1) { width: 160px; }
-.structured-log-table thead th:nth-child(2) { width: 80px; }
-.structured-log-table thead th:nth-child(3) { width: 110px; }
+.structured-log-table thead th:nth-child(1) { width: 140px; }
+.structured-log-table thead th:nth-child(2) { width: 75px; }
+.structured-log-table thead th:nth-child(3) { width: 120px; }
 .structured-log-table thead th:nth-child(4) { width: auto; }
 
 .structured-log-table tbody td {
