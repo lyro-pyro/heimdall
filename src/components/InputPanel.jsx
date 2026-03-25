@@ -78,15 +78,15 @@ export default function InputPanel({ onAnalyze, isLoading }) {
       <div className="options-group">
         <div className="micro-data" style={{ marginBottom: '8px' }}>HEURISTIC_FLAGS:</div>
         <div className="option-toggle" onClick={() => toggleOption('mask')}>
-          <span className="option-label">ENCRYPT SENSITIVE</span>
+          <span className="option-label">ENCRYPT // MASK_SENSITIVE</span>
           <div className={`toggle-switch ${options.mask ? 'on' : ''}`} />
         </div>
         <div className="option-toggle" onClick={() => toggleOption('block_high_risk')}>
-          <span className="option-label">FIREWALL CRITICAL</span>
+          <span className="option-label">AUTO_QUARANTINE // FIREWALL_BLOCK</span>
           <div className={`toggle-switch ${options.block_high_risk ? 'on' : ''}`} />
         </div>
         <div className="option-toggle" onClick={() => toggleOption('log_analysis')}>
-          <span className="option-label">DEEP DIAGNOSTICS</span>
+          <span className="option-label">DEEP_SCAN // HEURISTICS</span>
           <div className={`toggle-switch ${options.log_analysis ? 'on' : ''}`} />
         </div>
       </div>
